@@ -1,16 +1,16 @@
 FROM w3serv/ubuntu:base
 MAINTAINER david.pl.robinson@googlemail.com
 
-RUN dpkg-divert --local --rename --add /sbin/initctl
-
 RUN apt-get update
 
-RUN apt-get -y install mysql-server
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
+RUN apt-get update
+RUN export DEBIAN_FRONTEND="noninteractive"
+#RUN debconf-set-selections <<< "mysql-server mysql-server/root_password password changeme"
+#RUN debconf-set-selections <<< "mysql-server mysql-server/root_password_again password changeme"
+RUN echo "mysql-server mysql-server/root_password password changeme" | debconf-set-selections
+RUN echo "mysql-server mysql-server/root_password_again password changeme" | debconf-set-selections
+RUN apt-get install -y mysql-server
 
-ADD ./startup.sh /opt/startup.sh
+ENTRYPOINT ["/usr/bin/mysqld"]
 
 EXPOSE 3306
-
-
-CMD ["/bin/bash", "/opt/startup.sh"]
