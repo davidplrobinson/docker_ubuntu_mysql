@@ -9,6 +9,9 @@ RUN echo "mysql-server mysql-server/root_password password changeme" | debconf-s
 RUN echo "mysql-server mysql-server/root_password_again password changeme" | debconf-set-selections
 RUN apt-get install -y mysql-server
 
-CMD ["mysqld"]
+COPY startup.sh /tmp/mysql_run.sh
+RUN chmod +x /tmp/mysql_run.sh
+
+ENTRYPOINT ["/tmp/mysql_run.sh"]
 
 EXPOSE 3306
