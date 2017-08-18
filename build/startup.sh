@@ -3,8 +3,4 @@
 set -m
 set -e
 
-mysqld_safe &
-
-sleep 10
-
-fg
+mysqld_safe
