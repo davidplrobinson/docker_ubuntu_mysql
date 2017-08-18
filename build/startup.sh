@@ -1,16 +1,10 @@
 #!/bin/bash
 
-if [ ! -f /var/lib/mysql/ibdata1 ]; then
+set -m
+set -e
 
-	mysql_install_db
+mysqld_safe &
 
-	/usr/bin/mysqld_safe &
-	sleep 10s
+sleep 10
 
-	echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'changeme' WITH GRANT OPTION; FLUSH PRIVILEGES" | mysql
-
-	killall mysqld
-	sleep 10s
-fi
-
-/usr/bin/mysqld_safe
+fg
