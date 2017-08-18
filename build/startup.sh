@@ -5,6 +5,8 @@ set -e
 
 mysqld &
 
+/bin/bash
+
 sleep 10
 
 fg
